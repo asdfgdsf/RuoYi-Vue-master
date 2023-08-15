@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.mapper.LpFinanceMapper">
+
+    <resultMap type="com.ruoyi.domain.LpFinance" id="LpFinanceResult">
+        <result property="financeId"    column="finance_id"    />
+        <result property="financeName"    column="finance_name"    />
+        <result property="financeContent"    column="finance_content"    />
+        <result property="financeMoney"    column="finance_money"    />
+        <result property="financeBalance"    column="finance_balance"    />
+        <result property="supplierId"    column="supplier_id"    />
+        <result property="clientId"    column="client_id"    />
+        <result property="financeStatus"    column="finance_status"    />
+        <result property="auditStatus"    column="audit_status"    />
+        <result property="auditOpinion"    column="audit_opinion"    />
+        <result property="auditTime"    column="audit_time"    />
+        <result property="auditPerson"    column="audit_person"    />
+        <result property="approverOpinion"    column="approver_opinion"    />
+        <result property="approverTime"    column="approver_time"    />
+        <result property="approverPerson"    column="approver_person"    />
+        <result property="remark"    column="remark"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectLpFinanceVo">
+        select finance_id, finance_name, finance_content, finance_money, finance_balance, supplier_id, client_id, finance_status, audit_status, audit_opinion, audit_time, audit_person, approver_opinion, approver_time, approver_person, remark, create_by, create_time, update_by, update_time from lp_finance
+    </sql>
+    <select id="selectfinanceBalance" parameterType="com.ruoyi.domain.LpFinance" resultMap="LpFinanceResult">
+        SELECT finance_id,finance_balance FROM lp_finance WHERE finance_id = (SELECT MAX(finance_id) FROM lp_finance)  AND audit_status = 2
+    </select>
+
+    <select id="getFinanceMoney" parameterType="com.ruoyi.domain.LpFinance" resultMap="LpFinanceResult">
+        SELECT finance_id,finance_balance FROM lp_finance WHERE finance_id = (SELECT MAX(finance_id) FROM lp_finance)  AND audit_status = 2
+    </select>
+
+    <select id="selectLpFinanceList" parameterType="com.ruoyi.domain.LpFinance" resultMap="LpFinanceResult">
+        <include refid="selectLpFinanceVo"/>
+        <where>
+            <if test="financeName != null  and financeName != ''"> and finance_name like concat('%', #{financeName}, '%')</if>
+            <if test="financeContent != null  and financeContent != ''"> and finance_content = #{financeContent}</if>
+            <if test="financeMoney != null "> and finance_money = #{financeMoney}</if>
+            <if test="financeBalance != null "> and finance_balance = #{financeBalance}</if>
+            <if test="supplierId != null "> and supplier_id = #{supplierId}</if>
+            <if test="clientId != null "> and client_id = #{clientId}</if>
+            <if test="financeStatus != null "> and finance_status = #{financeStatus}</if>
+            <if test="auditStatus != null "> and audit_status = #{auditStatus}</if>
+            <if test="auditOpinion != null  and auditOpinion != ''"> and audit_opinion = #{auditOpinion}</if>
+            <if test="auditTime != null "> and audit_time = #{auditTime}</if>
+            <if test="auditPerson != null  and auditPerson != ''"> and audit_person = #{auditPerson}</if>
+            <if test="approverOpinion != null  and approverOpinion != ''"> and approver_opinion = #{approverOpinion}</if>
+            <if test="approverTime != null "> and approver_time = #{approverTime}</if>
+            <if test="approverPerson != null  and approverPerson != ''"> and approver_person = #{approverPerson}</if>
+        </where>
+    </select>
+
+    <select id="selectLpFinanceByFinanceId" parameterType="Long" resultMap="LpFinanceResult">
+        <include refid="selectLpFinanceVo"/>
+        where finance_id = #{financeId}
+    </select>
+
+    <insert id="insertLpFinance" parameterType="com.ruoyi.domain.LpFinance" useGeneratedKeys="true" keyProperty="financeId">
+        insert into lp_finance
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="financeName != null">finance_name,</if>
+            <if test="financeContent != null">finance_content,</if>
+            <if test="financeMoney != null">finance_money,</if>
+            <if test="financeBalance != null">finance_balance,</if>
+            <if test="supplierId != null">supplier_id,</if>
+            <if test="clientId != null">client_id,</if>
+            <if test="financeStatus != null">finance_status,</if>
+            <if test="auditStatus != null">audit_status,</if>
+            <if test="auditOpinion != null">audit_opinion,</if>
+            <if test="auditTime != null">audit_time,</if>
+            <if test="auditPerson != null">audit_person,</if>
+            <if test="approverOpinion != null">approver_opinion,</if>
+            <if test="approverTime != null">approver_time,</if>
+            <if test="approverPerson != null">approver_person,</if>
+            <if test="remark != null">remark,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="financeName != null">#{financeName},</if>
+            <if test="financeContent != null">#{financeContent},</if>
+            <if test="financeMoney != null">#{financeMoney},</if>
+            <if test="financeBalance != null">#{financeBalance},</if>
+            <if test="supplierId != null">#{supplierId},</if>
+            <if test="clientId != null">#{clientId},</if>
+            <if test="financeStatus != null">#{financeStatus},</if>
+            <if test="auditStatus != null">#{auditStatus},</if>
+            <if test="auditOpinion != null">#{auditOpinion},</if>
+            <if test="auditTime != null">#{auditTime},</if>
+            <if test="auditPerson != null">#{auditPerson},</if>
+            <if test="approverOpinion != null">#{approverOpinion},</if>
+            <if test="approverTime != null">#{approverTime},</if>
+            <if test="approverPerson != null">#{approverPerson},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateLpFinance" parameterType="com.ruoyi.domain.LpFinance">
+        update lp_finance
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="financeName != null">finance_name = #{financeName},</if>
+            <if test="financeContent != null">finance_content = #{financeContent},</if>
+            <if test="financeMoney != null">finance_money = #{financeMoney},</if>
+            <if test="financeBalance != null">finance_balance = #{financeBalance},</if>
+            <if test="supplierId != null">supplier_id = #{supplierId},</if>
+            <if test="clientId != null">client_id = #{clientId},</if>
+            <if test="financeStatus != null">finance_status = #{financeStatus},</if>
+            <if test="auditStatus != null">audit_status = #{auditStatus},</if>
+            <if test="auditOpinion != null">audit_opinion = #{auditOpinion},</if>
+            <if test="auditTime != null">audit_time = #{auditTime},</if>
+            <if test="auditPerson != null">audit_person = #{auditPerson},</if>
+            <if test="approverOpinion != null">approver_opinion = #{approverOpinion},</if>
+            <if test="approverTime != null">approver_time = #{approverTime},</if>
+            <if test="approverPerson != null">approver_person = #{approverPerson},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where finance_id = #{financeId}
+    </update>
+
+    <delete id="deleteLpFinanceByFinanceId" parameterType="Long">
+        delete from lp_finance where finance_id = #{financeId}
+    </delete>
+
+    <delete id="deleteLpFinanceByFinanceIds" parameterType="String">
+        delete from lp_finance where finance_id in
+        <foreach item="financeId" collection="array" open="(" separator="," close=")">
+            #{financeId}
+        </foreach>
+    </delete>
+</mapper>

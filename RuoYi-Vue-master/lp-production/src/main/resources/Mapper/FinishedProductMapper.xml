@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.mapper.FinishedProductMapper">
+
+    <resultMap type="com.ruoyi.domain.FinishedProduct" id="FinishedProductResult">
+        <result property="finishedProductId"    column="finished_product_id"    />
+        <result property="finishedProductName"    column="finished_product_name"    />
+        <result property="finishedProductNum"    column="finished_product_num"    />
+        <result property="finishedProductUnit"    column="finished_product_unit"    />
+        <result property="firstDuty"    column="first_duty"    />
+        <result property="firstDutyPhone"    column="first_duty_phone"    />
+        <result property="gradeClass"    column="grade_class"    />
+        <result property="officeTime"    column="office_time"    />
+        <result property="offTime"    column="off_time"    />
+        <result property="officeNum"    column="office_num"    />
+        <result property="remark"    column="remark"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectFinishedProductVo">
+        select finished_product_id, finished_product_name, finished_product_num, finished_product_unit, first_duty, first_duty_phone, grade_class, office_time, off_time, office_num, remark, create_by, create_time, update_by, update_time from lp_finished_product
+    </sql>
+
+    <select id="selectFinishedProductList" parameterType="com.ruoyi.domain.FinishedProduct" resultMap="FinishedProductResult">
+        <include refid="selectFinishedProductVo"/>
+        <where>
+            <if test="finishedProductName != null  and finishedProductName != ''"> and finished_product_name like concat('%', #{finishedProductName}, '%')</if>
+            <if test="finishedProductNum != null "> and finished_product_num = #{finishedProductNum}</if>
+            <if test="finishedProductUnit != null  and finishedProductUnit != ''"> and finished_product_unit = #{finishedProductUnit}</if>
+            <if test="firstDuty != null  and firstDuty != ''"> and first_duty = #{firstDuty}</if>
+            <if test="firstDutyPhone != null  and firstDutyPhone != ''"> and first_duty_phone = #{firstDutyPhone}</if>
+            <if test="gradeClass != null  and gradeClass != ''"> and grade_class = #{gradeClass}</if>
+            <if test="officeTime != null  and officeTime != ''"> and office_time = #{officeTime}</if>
+            <if test="offTime != null  and offTime != ''"> and off_time = #{offTime}</if>
+            <if test="officeNum != null "> and office_num = #{officeNum}</if>
+        </where>
+    </select>
+
+    <select id="selectFinishedProductByFinishedProductId" parameterType="Integer" resultMap="FinishedProductResult">
+        <include refid="selectFinishedProductVo"/>
+        where finished_product_id = #{finishedProductId}
+    </select>
+
+    <insert id="insertFinishedProduct" parameterType="com.ruoyi.domain.FinishedProduct" useGeneratedKeys="true" keyProperty="finishedProductId">
+        insert into lp_finished_product
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="finishedProductName != null">finished_product_name,</if>
+            <if test="finishedProductNum != null">finished_product_num,</if>
+            <if test="finishedProductUnit != null">finished_product_unit,</if>
+            <if test="firstDuty != null">first_duty,</if>
+            <if test="firstDutyPhone != null">first_duty_phone,</if>
+            <if test="gradeClass != null">grade_class,</if>
+            <if test="officeTime != null">office_time,</if>
+            <if test="offTime != null">off_time,</if>
+            <if test="officeNum != null">office_num,</if>
+            <if test="remark != null">remark,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="finishedProductName != null">#{finishedProductName},</if>
+            <if test="finishedProductNum != null">#{finishedProductNum},</if>
+            <if test="finishedProductUnit != null">#{finishedProductUnit},</if>
+            <if test="firstDuty != null">#{firstDuty},</if>
+            <if test="firstDutyPhone != null">#{firstDutyPhone},</if>
+            <if test="gradeClass != null">#{gradeClass},</if>
+            <if test="officeTime != null">#{officeTime},</if>
+            <if test="offTime != null">#{offTime},</if>
+            <if test="officeNum != null">#{officeNum},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateFinishedProduct" parameterType="com.ruoyi.domain.FinishedProduct">
+        update lp_finished_product
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="finishedProductName != null">finished_product_name = #{finishedProductName},</if>
+            <if test="finishedProductNum != null">finished_product_num = #{finishedProductNum},</if>
+            <if test="finishedProductUnit != null">finished_product_unit = #{finishedProductUnit},</if>
+            <if test="firstDuty != null">first_duty = #{firstDuty},</if>
+            <if test="firstDutyPhone != null">first_duty_phone = #{firstDutyPhone},</if>
+            <if test="gradeClass != null">grade_class = #{gradeClass},</if>
+            <if test="officeTime != null">office_time = #{officeTime},</if>
+            <if test="offTime != null">off_time = #{offTime},</if>
+            <if test="officeNum != null">office_num = #{officeNum},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where finished_product_id = #{finishedProductId}
+    </update>
+
+    <delete id="deleteFinishedProductByFinishedProductId" parameterType="Integer">
+        delete from lp_finished_product where finished_product_id = #{finishedProductId}
+    </delete>
+
+    <delete id="deleteFinishedProductByFinishedProductIds" parameterType="String">
+        delete from lp_finished_product where finished_product_id in
+        <foreach item="finishedProductId" collection="array" open="(" separator="," close=")">
+            #{finishedProductId}
+        </foreach>
+    </delete>
+</mapper>

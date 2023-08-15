@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.mapper.ClientClassifyMapper">
+
+    <resultMap type="com.ruoyi.domain.ClientClassify" id="ClientClassifyResult">
+        <result property="clientClassifyId"    column="client_classify_id"    />
+        <result property="clientClassifyName"    column="client_classify_name"    />
+        <result property="description"    column="description"    />
+        <result property="remark"    column="remark"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectClientClassifyVo">
+        select client_classify_id, client_classify_name, description, remark, create_by, create_time, update_by, update_time from lp_client_classify
+    </sql>
+
+    <select id="selectClientClassifyList" parameterType="com.ruoyi.domain.ClientClassify" resultMap="ClientClassifyResult">
+        <include refid="selectClientClassifyVo"/>
+        <where>
+            <if test="clientClassifyName != null  and clientClassifyName != ''"> and client_classify_name like concat('%', #{clientClassifyName}, '%')</if>
+            <if test="description != null  and description != ''"> and description = #{description}</if>
+        </where>
+    </select>
+
+    <select id="selectClientClassifyByClientClassifyId" parameterType="Integer" resultMap="ClientClassifyResult">
+        <include refid="selectClientClassifyVo"/>
+        where client_classify_id = #{clientClassifyId}
+    </select>
+
+    <insert id="insertClientClassify" parameterType="com.ruoyi.domain.ClientClassify" useGeneratedKeys="true" keyProperty="clientClassifyId">
+        insert into lp_client_classify
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="clientClassifyName != null">client_classify_name,</if>
+            <if test="description != null">description,</if>
+            <if test="remark != null">remark,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="clientClassifyName != null">#{clientClassifyName},</if>
+            <if test="description != null">#{description},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateClientClassify" parameterType="com.ruoyi.domain.ClientClassify">
+        update lp_client_classify
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="clientClassifyName != null">client_classify_name = #{clientClassifyName},</if>
+            <if test="description != null">description = #{description},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where client_classify_id = #{clientClassifyId}
+    </update>
+
+    <delete id="deleteClientClassifyByClientClassifyId" parameterType="Integer">
+        delete from lp_client_classify where client_classify_id = #{clientClassifyId}
+    </delete>
+
+    <delete id="deleteClientClassifyByClientClassifyIds" parameterType="String">
+        delete from lp_client_classify where client_classify_id in
+        <foreach item="clientClassifyId" collection="array" open="(" separator="," close=")">
+            #{clientClassifyId}
+        </foreach>
+    </delete>
+</mapper>

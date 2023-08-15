@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.mapper.ProductionInventoryMapper">
+
+    <resultMap type="com.ruoyi.domain.ProductionInventory" id="ProductionInventoryResult">
+        <result property="productionInventoryId"    column="production_inventory_id"    />
+        <result property="productionInventoryName"    column="production_inventory_name"    />
+        <result property="productionInventoryNum"    column="production_inventory_num"    />
+        <result property="productionInventoryPrice"    column="production_inventory_price"    />
+        <result property="productionInventoryUnit"    column="production_inventory_unit"    />
+        <result property="finishedProductName"    column="finished_product_name"    />
+        <result property="finishedProductNum"    column="finished_product_num"    />
+        <result property="finishedProductUnit"    column="finished_product__unit"    />
+        <result property="lossName"    column="loss_name"    />
+        <result property="lossNum"    column="loss_num"    />
+        <result property="lossUnit"    column="loss_unit"    />
+        <result property="firstDuty"    column="first_duty"    />
+        <result property="firstDutyPhone"    column="first_duty_phone"    />
+        <result property="gradeClass"    column="grade_class"    />
+        <result property="officeTime"    column="office_time"    />
+        <result property="offTime"    column="off_time"    />
+        <result property="officeNum"    column="office_num"    />
+        <result property="auditStatus"    column="audit_status"    />
+        <result property="auditOpinion"    column="audit_opinion"    />
+        <result property="auditTime"    column="audit_time"    />
+        <result property="auditPerson"    column="audit_person"    />
+        <result property="approverOpinion"    column="approver_opinion"    />
+        <result property="approverTime"    column="approver_time"    />
+        <result property="approverPerson"    column="approver_person"    />
+        <result property="remark"    column="remark"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectProductionInventoryVo">
+        select production_inventory_id, production_inventory_name, production_inventory_num, production_inventory_price, production_inventory_unit, finished_product_name, finished_product_num, finished_product__unit, loss_name, loss_num, loss_unit, first_duty, first_duty_phone, grade_class, office_time, off_time, office_num, audit_status, audit_opinion, audit_time, audit_person, approver_opinion, approver_time, approver_person, remark, create_by, create_time, update_by, update_time from lp_production_inventory
+    </sql>
+
+    <select id="selectProductionInventoryList" parameterType="com.ruoyi.domain.ProductionInventory" resultMap="ProductionInventoryResult">
+        <include refid="selectProductionInventoryVo"/>
+        <where>
+            <if test="productionInventoryName != null  and productionInventoryName != ''"> and production_inventory_name like concat('%', #{productionInventoryName}, '%')</if>
+            <if test="productionInventoryNum != null "> and production_inventory_num = #{productionInventoryNum}</if>
+            <if test="productionInventoryPrice != null "> and production_inventory_price = #{productionInventoryPrice}</if>
+            <if test="productionInventoryUnit != null  and productionInventoryUnit != ''"> and production_inventory_unit = #{productionInventoryUnit}</if>
+            <if test="finishedProductName != null  and finishedProductName != ''"> and finished_product_name like concat('%', #{finishedProductName}, '%')</if>
+            <if test="finishedProductNum != null "> and finished_product_num = #{finishedProductNum}</if>
+            <if test="finishedProductUnit != null  and finishedProductUnit != ''"> and finished_product__unit = #{finishedProductUnit}</if>
+            <if test="lossName != null  and lossName != ''"> and loss_name like concat('%', #{lossName}, '%')</if>
+            <if test="lossNum != null "> and loss_num = #{lossNum}</if>
+            <if test="lossUnit != null  and lossUnit != ''"> and loss_unit = #{lossUnit}</if>
+            <if test="firstDuty != null  and firstDuty != ''"> and first_duty = #{firstDuty}</if>
+            <if test="firstDutyPhone != null  and firstDutyPhone != ''"> and first_duty_phone = #{firstDutyPhone}</if>
+            <if test="gradeClass != null  and gradeClass != ''"> and grade_class = #{gradeClass}</if>
+            <if test="officeTime != null  and officeTime != ''"> and office_time = #{officeTime}</if>
+            <if test="offTime != null  and offTime != ''"> and off_time = #{offTime}</if>
+            <if test="officeNum != null "> and office_num = #{officeNum}</if>
+            <if test="auditStatus != null "> and audit_status = #{auditStatus}</if>
+            <if test="auditOpinion != null  and auditOpinion != ''"> and audit_opinion = #{auditOpinion}</if>
+            <if test="auditTime != null "> and audit_time = #{auditTime}</if>
+            <if test="auditPerson != null  and auditPerson != ''"> and audit_person = #{auditPerson}</if>
+            <if test="approverOpinion != null  and approverOpinion != ''"> and approver_opinion = #{approverOpinion}</if>
+            <if test="approverTime != null "> and approver_time = #{approverTime}</if>
+            <if test="approverPerson != null  and approverPerson != ''"> and approver_person = #{approverPerson}</if>
+        </where>
+    </select>
+
+    <select id="selectProductionInventoryByProductionInventoryId" parameterType="Long" resultMap="ProductionInventoryResult">
+        <include refid="selectProductionInventoryVo"/>
+        where production_inventory_id = #{productionInventoryId}
+    </select>
+
+    <insert id="insertProductionInventory" parameterType="com.ruoyi.domain.ProductionInventory" useGeneratedKeys="true" keyProperty="productionInventoryId">
+        insert into lp_production_inventory
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="productionInventoryName != null">production_inventory_name,</if>
+            <if test="productionInventoryNum != null">production_inventory_num,</if>
+            <if test="productionInventoryPrice != null">production_inventory_price,</if>
+            <if test="productionInventoryUnit != null">production_inventory_unit,</if>
+            <if test="finishedProductName != null">finished_product_name,</if>
+            <if test="finishedProductNum != null">finished_product_num,</if>
+            <if test="finishedProductUnit != null">finished_product__unit,</if>
+            <if test="lossName != null">loss_name,</if>
+            <if test="lossNum != null">loss_num,</if>
+            <if test="lossUnit != null">loss_unit,</if>
+            <if test="firstDuty != null">first_duty,</if>
+            <if test="firstDutyPhone != null">first_duty_phone,</if>
+            <if test="gradeClass != null">grade_class,</if>
+            <if test="officeTime != null">office_time,</if>
+            <if test="offTime != null">off_time,</if>
+            <if test="officeNum != null">office_num,</if>
+            <if test="auditStatus != null">audit_status,</if>
+            <if test="auditOpinion != null">audit_opinion,</if>
+            <if test="auditTime != null">audit_time,</if>
+            <if test="auditPerson != null">audit_person,</if>
+            <if test="approverOpinion != null">approver_opinion,</if>
+            <if test="approverTime != null">approver_time,</if>
+            <if test="approverPerson != null">approver_person,</if>
+            <if test="remark != null">remark,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="productionInventoryName != null">#{productionInventoryName},</if>
+            <if test="productionInventoryNum != null">#{productionInventoryNum},</if>
+            <if test="productionInventoryPrice != null">#{productionInventoryPrice},</if>
+            <if test="productionInventoryUnit != null">#{productionInventoryUnit},</if>
+            <if test="finishedProductName != null">#{finishedProductName},</if>
+            <if test="finishedProductNum != null">#{finishedProductNum},</if>
+            <if test="finishedProductUnit != null">#{finishedProductUnit},</if>
+            <if test="lossName != null">#{lossName},</if>
+            <if test="lossNum != null">#{lossNum},</if>
+            <if test="lossUnit != null">#{lossUnit},</if>
+            <if test="firstDuty != null">#{firstDuty},</if>
+            <if test="firstDutyPhone != null">#{firstDutyPhone},</if>
+            <if test="gradeClass != null">#{gradeClass},</if>
+            <if test="officeTime != null">#{officeTime},</if>
+            <if test="offTime != null">#{offTime},</if>
+            <if test="officeNum != null">#{officeNum},</if>
+            <if test="auditStatus != null">#{auditStatus},</if>
+            <if test="auditOpinion != null">#{auditOpinion},</if>
+            <if test="auditTime != null">#{auditTime},</if>
+            <if test="auditPerson != null">#{auditPerson},</if>
+            <if test="approverOpinion != null">#{approverOpinion},</if>
+            <if test="approverTime != null">#{approverTime},</if>
+            <if test="approverPerson != null">#{approverPerson},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateProductionInventory" parameterType="com.ruoyi.domain.ProductionInventory">
+        update lp_production_inventory
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="productionInventoryName != null">production_inventory_name = #{productionInventoryName},</if>
+            <if test="productionInventoryNum != null">production_inventory_num = #{productionInventoryNum},</if>
+            <if test="productionInventoryPrice != null">production_inventory_price = #{productionInventoryPrice},</if>
+            <if test="productionInventoryUnit != null">production_inventory_unit = #{productionInventoryUnit},</if>
+            <if test="finishedProductName != null">finished_product_name = #{finishedProductName},</if>
+            <if test="finishedProductNum != null">finished_product_num = #{finishedProductNum},</if>
+            <if test="finishedProductUnit != null">finished_product__unit = #{finishedProductUnit},</if>
+            <if test="lossName != null">loss_name = #{lossName},</if>
+            <if test="lossNum != null">loss_num = #{lossNum},</if>
+            <if test="lossUnit != null">loss_unit = #{lossUnit},</if>
+            <if test="firstDuty != null">first_duty = #{firstDuty},</if>
+            <if test="firstDutyPhone != null">first_duty_phone = #{firstDutyPhone},</if>
+            <if test="gradeClass != null">grade_class = #{gradeClass},</if>
+            <if test="officeTime != null">office_time = #{officeTime},</if>
+            <if test="offTime != null">off_time = #{offTime},</if>
+            <if test="officeNum != null">office_num = #{officeNum},</if>
+            <if test="auditStatus != null">audit_status = #{auditStatus},</if>
+            <if test="auditOpinion != null">audit_opinion = #{auditOpinion},</if>
+            <if test="auditTime != null">audit_time = #{auditTime},</if>
+            <if test="auditPerson != null">audit_person = #{auditPerson},</if>
+            <if test="approverOpinion != null">approver_opinion = #{approverOpinion},</if>
+            <if test="approverTime != null">approver_time = #{approverTime},</if>
+            <if test="approverPerson != null">approver_person = #{approverPerson},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where production_inventory_id = #{productionInventoryId}
+    </update>
+
+    <delete id="deleteProductionInventoryByProductionInventoryId" parameterType="Long">
+        delete from lp_production_inventory where production_inventory_id = #{productionInventoryId}
+    </delete>
+
+    <delete id="deleteProductionInventoryByProductionInventoryIds" parameterType="String">
+        delete from lp_production_inventory where production_inventory_id in
+        <foreach item="productionInventoryId" collection="array" open="(" separator="," close=")">
+            #{productionInventoryId}
+        </foreach>
+    </delete>
+</mapper>

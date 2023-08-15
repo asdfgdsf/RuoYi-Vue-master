@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.mapper.LpSupplierMapper">
+
+    <resultMap type="com.ruoyi.domain.LpSupplier" id="LpSupplierResult">
+        <result property="supplierId"    column="supplier_id"    />
+        <result property="supplierName"    column="supplier_name"    />
+        <result property="contact"    column="contact"    />
+        <result property="classifyId"    column="classify_id"    />
+        <result property="supplierAddress"    column="supplier_address"    />
+        <result property="supplierPhone"    column="supplier_phone"    />
+        <result property="supplierSynopsis"    column="supplier_synopsis"    />
+        <result property="supplierCategory"    column="supplier_category"    />
+        <result property="auditStatus"    column="audit_status"    />
+        <result property="auditOpinion"    column="audit_opinion"    />
+        <result property="auditTime"    column="audit_time"    />
+        <result property="auditPerson"    column="audit_person"    />
+        <result property="approverOpinion"    column="approver_opinion"    />
+        <result property="approverTime"    column="approver_time"    />
+        <result property="approverPerson"    column="approver_person"    />
+        <result property="remark"    column="remark"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="isDelete"    column="is_delete"    />
+    </resultMap>
+
+    <sql id="selectLpSupplierVo">
+        select supplier_id, supplier_name, contact, classify_id, supplier_address, supplier_phone, supplier_synopsis, supplier_category, audit_status, audit_opinion, audit_time, audit_person, approver_opinion, approver_time, approver_person, remark, create_by, create_time, update_by, update_time, is_delete from lp_supplier
+    </sql>
+
+    <select id="selectLpSupplierList" parameterType="com.ruoyi.domain.LpSupplier" resultMap="LpSupplierResult">
+        <include refid="selectLpSupplierVo"/>
+        <where>
+            <if test="supplierName != null  and supplierName != ''"> and supplier_name like concat('%', #{supplierName}, '%')</if>
+            <if test="contact != null  and contact != ''"> and contact = #{contact}</if>
+            <if test="classifyId != null "> and classify_id = #{classifyId}</if>
+            <if test="supplierAddress != null  and supplierAddress != ''"> and supplier_address = #{supplierAddress}</if>
+            <if test="supplierPhone != null  and supplierPhone != ''"> and supplier_phone = #{supplierPhone}</if>
+            <if test="supplierSynopsis != null  and supplierSynopsis != ''"> and supplier_synopsis = #{supplierSynopsis}</if>
+            <if test="supplierCategory != null  and supplierCategory != ''"> and supplier_category = #{supplierCategory}</if>
+            <if test="auditStatus != null "> and audit_status = #{auditStatus}</if>
+            <if test="auditOpinion != null  and auditOpinion != ''"> and audit_opinion = #{auditOpinion}</if>
+            <if test="auditTime != null "> and audit_time = #{auditTime}</if>
+            <if test="auditPerson != null  and auditPerson != ''"> and audit_person = #{auditPerson}</if>
+            <if test="approverOpinion != null  and approverOpinion != ''"> and approver_opinion = #{approverOpinion}</if>
+            <if test="approverTime != null "> and approver_time = #{approverTime}</if>
+            <if test="approverPerson != null  and approverPerson != ''"> and approver_person = #{approverPerson}</if>
+            <if test="isDelete != null "> and is_delete = #{isDelete}</if>
+        </where>
+    </select>
+
+    <select id="selectLpSupplierBySupplierId" parameterType="Long" resultMap="LpSupplierResult">
+        <include refid="selectLpSupplierVo"/>
+        where supplier_id = #{supplierId}
+    </select>
+
+    <insert id="insertLpSupplier" parameterType="com.ruoyi.domain.LpSupplier" useGeneratedKeys="true" keyProperty="supplierId">
+        insert into lp_supplier
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="supplierName != null">supplier_name,</if>
+            <if test="contact != null">contact,</if>
+            <if test="classifyId != null">classify_id,</if>
+            <if test="supplierAddress != null">supplier_address,</if>
+            <if test="supplierPhone != null">supplier_phone,</if>
+            <if test="supplierSynopsis != null">supplier_synopsis,</if>
+            <if test="supplierCategory != null">supplier_category,</if>
+            <if test="auditStatus != null">audit_status,</if>
+            <if test="auditOpinion != null">audit_opinion,</if>
+            <if test="auditTime != null">audit_time,</if>
+            <if test="auditPerson != null">audit_person,</if>
+            <if test="approverOpinion != null">approver_opinion,</if>
+            <if test="approverTime != null">approver_time,</if>
+            <if test="approverPerson != null">approver_person,</if>
+            <if test="remark != null">remark,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="isDelete != null">is_delete,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="supplierName != null">#{supplierName},</if>
+            <if test="contact != null">#{contact},</if>
+            <if test="classifyId != null">#{classifyId},</if>
+            <if test="supplierAddress != null">#{supplierAddress},</if>
+            <if test="supplierPhone != null">#{supplierPhone},</if>
+            <if test="supplierSynopsis != null">#{supplierSynopsis},</if>
+            <if test="supplierCategory != null">#{supplierCategory},</if>
+            <if test="auditStatus != null">#{auditStatus},</if>
+            <if test="auditOpinion != null">#{auditOpinion},</if>
+            <if test="auditTime != null">#{auditTime},</if>
+            <if test="auditPerson != null">#{auditPerson},</if>
+            <if test="approverOpinion != null">#{approverOpinion},</if>
+            <if test="approverTime != null">#{approverTime},</if>
+            <if test="approverPerson != null">#{approverPerson},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="isDelete != null">#{isDelete},</if>
+         </trim>
+    </insert>
+
+    <update id="updateLpSupplier" parameterType="com.ruoyi.domain.LpSupplier">
+        update lp_supplier
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="supplierName != null">supplier_name = #{supplierName},</if>
+            <if test="contact != null">contact = #{contact},</if>
+            <if test="classifyId != null">classify_id = #{classifyId},</if>
+            <if test="supplierAddress != null">supplier_address = #{supplierAddress},</if>
+            <if test="supplierPhone != null">supplier_phone = #{supplierPhone},</if>
+            <if test="supplierSynopsis != null">supplier_synopsis = #{supplierSynopsis},</if>
+            <if test="supplierCategory != null">supplier_category = #{supplierCategory},</if>
+            <if test="auditStatus != null">audit_status = #{auditStatus},</if>
+            <if test="auditOpinion != null">audit_opinion = #{auditOpinion},</if>
+            <if test="auditTime != null">audit_time = #{auditTime},</if>
+            <if test="auditPerson != null">audit_person = #{auditPerson},</if>
+            <if test="approverOpinion != null">approver_opinion = #{approverOpinion},</if>
+            <if test="approverTime != null">approver_time = #{approverTime},</if>
+            <if test="approverPerson != null">approver_person = #{approverPerson},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="isDelete != null">is_delete = #{isDelete},</if>
+        </trim>
+        where supplier_id = #{supplierId}
+    </update>
+
+    <delete id="deleteLpSupplierBySupplierId" parameterType="Long">
+        delete from lp_supplier where supplier_id = #{supplierId}
+    </delete>
+
+    <delete id="deleteLpSupplierBySupplierIds" parameterType="String">
+        delete from lp_supplier where supplier_id in
+        <foreach item="supplierId" collection="array" open="(" separator="," close=")">
+            #{supplierId}
+        </foreach>
+    </delete>
+</mapper>

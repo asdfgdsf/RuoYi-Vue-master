@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.mapper.LpClassificationMapper">
+
+    <resultMap type="com.ruoyi.domain.LpClassification" id="LpClassificationResult">
+        <result property="classificationId"    column="classification_id"    />
+        <result property="classificationName"    column="classification_name"    />
+        <result property="description"    column="description"    />
+        <result property="sort"    column="sort"    />
+        <result property="remark"    column="remark"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectLpClassificationVo">
+        select classification_id, classification_name, description, sort, remark, create_by, create_time, update_by, update_time from lp_classification
+    </sql>
+
+    <select id="selectLpClassificationList" parameterType="com.ruoyi.domain.LpClassification" resultMap="LpClassificationResult">
+        <include refid="selectLpClassificationVo"/>
+        <where>
+            <if test="classificationName != null  and classificationName != ''"> and classification_name like concat('%', #{classificationName}, '%')</if>
+            <if test="description != null  and description != ''"> and description = #{description}</if>
+            <if test="sort != null "> and sort = #{sort}</if>
+        </where>
+    </select>
+
+    <select id="selectLpClassificationByClassificationId" parameterType="Long" resultMap="LpClassificationResult">
+        <include refid="selectLpClassificationVo"/>
+        where classification_id = #{classificationId}
+    </select>
+
+    <insert id="insertLpClassification" parameterType="com.ruoyi.domain.LpClassification" useGeneratedKeys="true" keyProperty="classificationId">
+        insert into lp_classification
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="classificationName != null">classification_name,</if>
+            <if test="description != null">description,</if>
+            <if test="sort != null">sort,</if>
+            <if test="remark != null">remark,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="classificationName != null">#{classificationName},</if>
+            <if test="description != null">#{description},</if>
+            <if test="sort != null">#{sort},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateLpClassification" parameterType="com.ruoyi.domain.LpClassification">
+        update lp_classification
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="classificationName != null">classification_name = #{classificationName},</if>
+            <if test="description != null">description = #{description},</if>
+            <if test="sort != null">sort = #{sort},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where classification_id = #{classificationId}
+    </update>
+
+    <delete id="deleteLpClassificationByClassificationId" parameterType="Long">
+        delete from lp_classification where classification_id = #{classificationId}
+    </delete>
+
+    <delete id="deleteLpClassificationByClassificationIds" parameterType="String">
+        delete from lp_classification where classification_id in
+        <foreach item="classificationId" collection="array" open="(" separator="," close=")">
+            #{classificationId}
+        </foreach>
+    </delete>
+</mapper>

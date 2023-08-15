@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.mapper.ProductMapper">
+
+    <resultMap type="com.ruoyi.domain.Product" id="ProductResult">
+        <result property="productId"    column="product_id"    />
+        <result property="productName"    column="product_name"    />
+        <result property="productNum"    column="product_num"    />
+        <result property="productPrice"    column="product_price"    />
+        <result property="productUnit"    column="product_unit"    />
+        <result property="operationProductId"    column="operation_product_id"    />
+        <result property="remark"    column="remark"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectProductVo">
+        select product_id, product_name, product_num, product_price, product_unit, operation_product_id, remark, create_by, create_time, update_by, update_time from lp_product
+    </sql>
+
+    <select id="selectProductList" parameterType="com.ruoyi.domain.Product" resultMap="ProductResult">
+        <include refid="selectProductVo"/>
+        <where>
+            <if test="productName != null  and productName != ''"> and product_name like concat('%', #{productName}, '%')</if>
+            <if test="productNum != null "> and product_num = #{productNum}</if>
+            <if test="productPrice != null "> and product_price = #{productPrice}</if>
+            <if test="productUnit != null  and productUnit != ''"> and product_unit = #{productUnit}</if>
+            <if test="operationProductId != null "> and operation_product_id = #{operationProductId}</if>
+             and isdelete=0
+        </where>
+
+    </select>
+
+    <select id="selectProductByProductId" parameterType="Integer" resultMap="ProductResult">
+        <include refid="selectProductVo"/>
+        where product_id = #{productId} and isdelete=0
+    </select>
+
+    <insert id="insertProduct" parameterType="com.ruoyi.domain.Product" useGeneratedKeys="true" keyProperty="productId">
+        insert into lp_product
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="productName != null">product_name,</if>
+            <if test="productNum != null">product_num,</if>
+            <if test="productPrice != null">product_price,</if>
+            <if test="productUnit != null">product_unit,</if>
+            <if test="operationProductId != null">operation_product_id,</if>
+            <if test="remark != null">remark,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="productName != null">#{productName},</if>
+            <if test="productNum != null">#{productNum},</if>
+            <if test="productPrice != null">#{productPrice},</if>
+            <if test="productUnit != null">#{productUnit},</if>
+            <if test="operationProductId != null">#{operationProductId},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateProduct" parameterType="com.ruoyi.domain.Product">
+        update lp_product
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="productName != null">product_name = #{productName},</if>
+            <if test="productNum != null">product_num = #{productNum},</if>
+            <if test="productPrice != null">product_price = #{productPrice},</if>
+            <if test="productUnit != null">product_unit = #{productUnit},</if>
+            <if test="operationProductId != null">operation_product_id = #{operationProductId},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where product_id = #{productId}
+    </update>
+
+    <delete id="deleteProductByProductId" parameterType="Integer">
+        update lp_product set isdelete=1 where product_id=#{productId}
+    </delete>
+
+    <delete id="deleteProductByProductIds" parameterType="String">
+        update lp_product set isdelete=1 where product_id in
+        <foreach item="productId" collection="array" open="(" separator="," close=")">
+            #{productId}
+        </foreach>
+    </delete>
+</mapper>

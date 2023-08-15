@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.mapper.InventoryMapper">
+
+    <resultMap type="com.ruoyi.domain.Inventory" id="InventoryResult">
+        <result property="inventoryId"    column="inventory_id"    />
+        <result property="inventoryName"    column="inventory_name"    />
+        <result property="inventoryNum"    column="inventory_num"    />
+        <result property="inventoryPrice"    column="inventory_price"    />
+        <result property="inventoryUnit"    column="inventory_unit"    />
+        <result property="warehouseWarrantId"    column="warehouse_warrant_id"    />
+        <result property="remark"    column="remark"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectInventoryVo">
+        select inventory_id, inventory_name, inventory_num, inventory_price, inventory_unit, warehouse_warrant_id, remark, create_by, create_time, update_by, update_time from lp_inventory
+    </sql>
+
+    <select id="selectInventoryList" parameterType="com.ruoyi.domain.Inventory" resultMap="InventoryResult">
+        <include refid="selectInventoryVo"/>
+        <where>
+            <if test="inventoryName != null  and inventoryName != ''"> and inventory_name like concat('%', #{inventoryName}, '%')</if>
+            <if test="inventoryNum != null "> and inventory_num = #{inventoryNum}</if>
+            <if test="inventoryPrice != null "> and inventory_price = #{inventoryPrice}</if>
+            <if test="inventoryUnit != null  and inventoryUnit != ''"> and inventory_unit = #{inventoryUnit}</if>
+            <if test="warehouseWarrantId != null "> and warehouse_warrant_id = #{warehouseWarrantId}</if>
+        </where>
+    </select>
+
+    <select id="selectInventoryByInventoryId" parameterType="Long" resultMap="InventoryResult">
+        <include refid="selectInventoryVo"/>
+        where inventory_id = #{inventoryId}
+    </select>
+
+    <insert id="insertInventory" parameterType="com.ruoyi.domain.Inventory" useGeneratedKeys="true" keyProperty="inventoryId">
+        insert into lp_inventory
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="inventoryName != null">inventory_name,</if>
+            <if test="inventoryNum != null">inventory_num,</if>
+            <if test="inventoryPrice != null">inventory_price,</if>
+            <if test="inventoryUnit != null">inventory_unit,</if>
+            <if test="warehouseWarrantId != null">warehouse_warrant_id,</if>
+            <if test="remark != null">remark,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="inventoryName != null">#{inventoryName},</if>
+            <if test="inventoryNum != null">#{inventoryNum},</if>
+            <if test="inventoryPrice != null">#{inventoryPrice},</if>
+            <if test="inventoryUnit != null">#{inventoryUnit},</if>
+            <if test="warehouseWarrantId != null">#{warehouseWarrantId},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateInventory" parameterType="com.ruoyi.domain.Inventory">
+        update lp_inventory
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="inventoryName != null">inventory_name = #{inventoryName},</if>
+            <if test="inventoryNum != null">inventory_num = #{inventoryNum},</if>
+            <if test="inventoryPrice != null">inventory_price = #{inventoryPrice},</if>
+            <if test="inventoryUnit != null">inventory_unit = #{inventoryUnit},</if>
+            <if test="warehouseWarrantId != null">warehouse_warrant_id = #{warehouseWarrantId},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where inventory_id = #{inventoryId}
+    </update>
+
+    <delete id="deleteInventoryByInventoryId" parameterType="Long">
+        delete from lp_inventory where inventory_id = #{inventoryId}
+    </delete>
+
+    <delete id="deleteInventoryByInventoryIds" parameterType="String">
+        delete from lp_inventory where inventory_id in
+        <foreach item="inventoryId" collection="array" open="(" separator="," close=")">
+            #{inventoryId}
+        </foreach>
+    </delete>
+</mapper>

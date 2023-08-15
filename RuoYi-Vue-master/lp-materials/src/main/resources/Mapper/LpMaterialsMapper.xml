@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.mapper.LpMaterialsMapper">
+
+    <resultMap type="com.ruoyi.domain.LpMaterials" id="LpMaterialsResult">
+        <result property="lpMaterialsId"    column="lp_materials_id"    />
+        <result property="materialsName"    column="materials_name"    />
+        <result property="materialsNum"    column="materials_num"    />
+        <result property="materialsPrice"    column="materials_price"    />
+        <result property="unit"    column="unit"    />
+        <result property="remark"    column="remark"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectLpMaterialsVo">
+        select lp_materials_id, materials_name, materials_num, materials_price, unit, remark, create_by, create_time, update_by, update_time from lp_materials
+    </sql>
+
+    <select id="selectLpMaterialsList" parameterType="com.ruoyi.domain.LpMaterials" resultMap="LpMaterialsResult">
+        <include refid="selectLpMaterialsVo"/>
+        <where>
+            <if test="materialsName != null  and materialsName != ''"> and materials_name like concat('%', #{materialsName}, '%')</if>
+            <if test="materialsNum != null "> and materials_num = #{materialsNum}</if>
+            <if test="materialsPrice != null "> and materials_price = #{materialsPrice}</if>
+            <if test="unit != null  and unit != ''"> and unit = #{unit}</if>
+        </where>
+    </select>
+
+    <select id="selectLpMaterialsByLpMaterialsId" parameterType="Long" resultMap="LpMaterialsResult">
+        <include refid="selectLpMaterialsVo"/>
+        where lp_materials_id = #{lpMaterialsId}
+    </select>
+
+    <insert id="insertLpMaterials" parameterType="com.ruoyi.domain.LpMaterials" useGeneratedKeys="true" keyProperty="lpMaterialsId">
+        insert into lp_materials
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="materialsName != null">materials_name,</if>
+            <if test="materialsNum != null">materials_num,</if>
+            <if test="materialsPrice != null">materials_price,</if>
+            <if test="unit != null">unit,</if>
+            <if test="remark != null">remark,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="materialsName != null">#{materialsName},</if>
+            <if test="materialsNum != null">#{materialsNum},</if>
+            <if test="materialsPrice != null">#{materialsPrice},</if>
+            <if test="unit != null">#{unit},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateLpMaterials" parameterType="com.ruoyi.domain.LpMaterials">
+        update lp_materials
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="materialsName != null">materials_name = #{materialsName},</if>
+            <if test="materialsNum != null">materials_num = #{materialsNum},</if>
+            <if test="materialsPrice != null">materials_price = #{materialsPrice},</if>
+            <if test="unit != null">unit = #{unit},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where lp_materials_id = #{lpMaterialsId}
+    </update>
+
+    <delete id="deleteLpMaterialsByLpMaterialsId" parameterType="Long">
+        delete from lp_materials where lp_materials_id = #{lpMaterialsId}
+    </delete>
+
+    <delete id="deleteLpMaterialsByLpMaterialsIds" parameterType="String">
+        delete from lp_materials where lp_materials_id in
+        <foreach item="lpMaterialsId" collection="array" open="(" separator="," close=")">
+            #{lpMaterialsId}
+        </foreach>
+    </delete>
+</mapper>

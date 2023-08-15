@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.mapper.OperationProductMapper">
+
+    <resultMap type="com.ruoyi.domain.OperationProduct" id="OperationProductResult">
+        <result property="operationProductId"    column="operation_product_id"    />
+        <result property="operationProductName"    column="operation_product_name"    />
+        <result property="operationProductNum"    column="operation_product_num"    />
+        <result property="operationProductPrice"    column="operation_product_price"    />
+        <result property="operationProductUnit"    column="operation_product_unit"    />
+        <result property="warehouseId"    column="warehouse_id"    />
+        <result property="shelfId"    column="shelf_id"    />
+        <result property="locationId"    column="location_id"    />
+        <result property="firstDuty"    column="first_duty"    />
+        <result property="firstDutyPhone"    column="first_duty_phone"    />
+        <result property="gradeClass"    column="grade_class"    />
+        <result property="officeTime"    column="office_time"    />
+        <result property="offTime"    column="off_time"    />
+        <result property="officeNum"    column="office_num"    />
+        <result property="auditStatus"    column="audit_status"    />
+        <result property="auditOpinion"    column="audit_opinion"    />
+        <result property="auditTime"    column="audit_time"    />
+        <result property="auditPerson"    column="audit_person"    />
+        <result property="approverOpinion"    column="approver_opinion"    />
+        <result property="approverTime"    column="approver_time"    />
+        <result property="approverPerson"    column="approver_person"    />
+        <result property="remark"    column="remark"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectOperationProductVo">
+        select operation_product_id, operation_product_name, operation_product_num, operation_product_price, operation_product_unit, warehouse_id, shelf_id, location_id, first_duty, first_duty_phone, grade_class, office_time, off_time, office_num, audit_status, audit_opinion, audit_time, audit_person, approver_opinion, approver_time, approver_person, remark, create_by, create_time, update_by, update_time from lp_operation_product
+    </sql>
+
+    <select id="selectOperationProductList" parameterType="com.ruoyi.domain.OperationProduct" resultMap="OperationProductResult">
+        <include refid="selectOperationProductVo"/>
+        <where>
+            <if test="operationProductName != null  and operationProductName != ''"> and operation_product_name like concat('%', #{operationProductName}, '%')</if>
+            <if test="operationProductNum != null "> and operation_product_num = #{operationProductNum}</if>
+            <if test="operationProductPrice != null "> and operation_product_price = #{operationProductPrice}</if>
+            <if test="operationProductUnit != null  and operationProductUnit != ''"> and operation_product_unit = #{operationProductUnit}</if>
+            <if test="warehouseId != null "> and warehouse_id = #{warehouseId}</if>
+            <if test="shelfId != null "> and shelf_id = #{shelfId}</if>
+            <if test="locationId != null "> and location_id = #{locationId}</if>
+            <if test="firstDuty != null  and firstDuty != ''"> and first_duty = #{firstDuty}</if>
+            <if test="firstDutyPhone != null  and firstDutyPhone != ''"> and first_duty_phone = #{firstDutyPhone}</if>
+            <if test="gradeClass != null  and gradeClass != ''"> and grade_class = #{gradeClass}</if>
+            <if test="officeTime != null  and officeTime != ''"> and office_time = #{officeTime}</if>
+            <if test="offTime != null  and offTime != ''"> and off_time = #{offTime}</if>
+            <if test="officeNum != null "> and office_num = #{officeNum}</if>
+            <if test="auditStatus != null "> and audit_status = #{auditStatus}</if>
+            <if test="auditOpinion != null  and auditOpinion != ''"> and audit_opinion = #{auditOpinion}</if>
+            <if test="auditTime != null "> and audit_time = #{auditTime}</if>
+            <if test="auditPerson != null  and auditPerson != ''"> and audit_person = #{auditPerson}</if>
+            <if test="approverOpinion != null  and approverOpinion != ''"> and approver_opinion = #{approverOpinion}</if>
+            <if test="approverTime != null "> and approver_time = #{approverTime}</if>
+            <if test="approverPerson != null  and approverPerson != ''"> and approver_person = #{approverPerson}</if>
+        </where>
+    </select>
+
+    <select id="selectOperationProductByOperationProductId" parameterType="Integer" resultMap="OperationProductResult">
+        <include refid="selectOperationProductVo"/>
+        where operation_product_id = #{operationProductId}
+    </select>
+
+    <insert id="insertOperationProduct" parameterType="com.ruoyi.domain.OperationProduct" useGeneratedKeys="true" keyProperty="operationProductId">
+        insert into lp_operation_product
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="operationProductName != null">operation_product_name,</if>
+            <if test="operationProductNum != null">operation_product_num,</if>
+            <if test="operationProductPrice != null">operation_product_price,</if>
+            <if test="operationProductUnit != null">operation_product_unit,</if>
+            <if test="warehouseId != null">warehouse_id,</if>
+            <if test="shelfId != null">shelf_id,</if>
+            <if test="locationId != null">location_id,</if>
+            <if test="firstDuty != null">first_duty,</if>
+            <if test="firstDutyPhone != null">first_duty_phone,</if>
+            <if test="gradeClass != null">grade_class,</if>
+            <if test="officeTime != null">office_time,</if>
+            <if test="offTime != null">off_time,</if>
+            <if test="officeNum != null">office_num,</if>
+            <if test="auditStatus != null">audit_status,</if>
+            <if test="auditOpinion != null">audit_opinion,</if>
+            <if test="auditTime != null">audit_time,</if>
+            <if test="auditPerson != null">audit_person,</if>
+            <if test="approverOpinion != null">approver_opinion,</if>
+            <if test="approverTime != null">approver_time,</if>
+            <if test="approverPerson != null">approver_person,</if>
+            <if test="remark != null">remark,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="operationProductName != null">#{operationProductName},</if>
+            <if test="operationProductNum != null">#{operationProductNum},</if>
+            <if test="operationProductPrice != null">#{operationProductPrice},</if>
+            <if test="operationProductUnit != null">#{operationProductUnit},</if>
+            <if test="warehouseId != null">#{warehouseId},</if>
+            <if test="shelfId != null">#{shelfId},</if>
+            <if test="locationId != null">#{locationId},</if>
+            <if test="firstDuty != null">#{firstDuty},</if>
+            <if test="firstDutyPhone != null">#{firstDutyPhone},</if>
+            <if test="gradeClass != null">#{gradeClass},</if>
+            <if test="officeTime != null">#{officeTime},</if>
+            <if test="offTime != null">#{offTime},</if>
+            <if test="officeNum != null">#{officeNum},</if>
+            <if test="auditStatus != null">#{auditStatus},</if>
+            <if test="auditOpinion != null">#{auditOpinion},</if>
+            <if test="auditTime != null">#{auditTime},</if>
+            <if test="auditPerson != null">#{auditPerson},</if>
+            <if test="approverOpinion != null">#{approverOpinion},</if>
+            <if test="approverTime != null">#{approverTime},</if>
+            <if test="approverPerson != null">#{approverPerson},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateOperationProduct" parameterType="com.ruoyi.domain.OperationProduct">
+        update lp_operation_product
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="operationProductName != null">operation_product_name = #{operationProductName},</if>
+            <if test="operationProductNum != null">operation_product_num = #{operationProductNum},</if>
+            <if test="operationProductPrice != null">operation_product_price = #{operationProductPrice},</if>
+            <if test="operationProductUnit != null">operation_product_unit = #{operationProductUnit},</if>
+            <if test="warehouseId != null">warehouse_id = #{warehouseId},</if>
+            <if test="shelfId != null">shelf_id = #{shelfId},</if>
+            <if test="locationId != null">location_id = #{locationId},</if>
+            <if test="firstDuty != null">first_duty = #{firstDuty},</if>
+            <if test="firstDutyPhone != null">first_duty_phone = #{firstDutyPhone},</if>
+            <if test="gradeClass != null">grade_class = #{gradeClass},</if>
+            <if test="officeTime != null">office_time = #{officeTime},</if>
+            <if test="offTime != null">off_time = #{offTime},</if>
+            <if test="officeNum != null">office_num = #{officeNum},</if>
+            <if test="auditStatus != null">audit_status = #{auditStatus},</if>
+            <if test="auditOpinion != null">audit_opinion = #{auditOpinion},</if>
+            <if test="auditTime != null">audit_time = #{auditTime},</if>
+            <if test="auditPerson != null">audit_person = #{auditPerson},</if>
+            <if test="approverOpinion != null">approver_opinion = #{approverOpinion},</if>
+            <if test="approverTime != null">approver_time = #{approverTime},</if>
+            <if test="approverPerson != null">approver_person = #{approverPerson},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where operation_product_id = #{operationProductId}
+    </update>
+
+    <delete id="deleteOperationProductByOperationProductId" parameterType="Integer">
+        delete from lp_operation_product where operation_product_id = #{operationProductId}
+    </delete>
+
+    <delete id="deleteOperationProductByOperationProductIds" parameterType="String">
+        delete from lp_operation_product where operation_product_id in
+        <foreach item="operationProductId" collection="array" open="(" separator="," close=")">
+            #{operationProductId}
+        </foreach>
+    </delete>
+</mapper>

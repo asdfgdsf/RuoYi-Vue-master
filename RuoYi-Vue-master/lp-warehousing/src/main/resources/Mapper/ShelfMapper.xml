@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.mapper.ShelfMapper">
+
+    <resultMap type="com.ruoyi.domain.Shelf" id="ShelfResult">
+        <result property="shelfId"    column="shelf_id"    />
+        <result property="shelfName"    column="shelf_name"    />
+        <result property="shelfEncoding"    column="shelf_encoding"    />
+        <result property="remark"    column="remark"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectShelfVo">
+        select shelf_id, shelf_name, shelf_encoding, remark, create_by, create_time, update_by, update_time from lp_shelf
+    </sql>
+
+    <select id="selectShelfList" parameterType="com.ruoyi.domain.Shelf" resultMap="ShelfResult">
+        <include refid="selectShelfVo"/>
+        <where>
+            <if test="shelfName != null  and shelfName != ''"> and shelf_name like concat('%', #{shelfName}, '%')</if>
+            <if test="shelfEncoding != null  and shelfEncoding != ''"> and shelf_encoding = #{shelfEncoding}</if>
+        </where>
+    </select>
+
+    <select id="selectShelfByShelfId" parameterType="Long" resultMap="ShelfResult">
+        <include refid="selectShelfVo"/>
+        where shelf_id = #{shelfId}
+    </select>
+
+    <insert id="insertShelf" parameterType="com.ruoyi.domain.Shelf" useGeneratedKeys="true" keyProperty="shelfId">
+        insert into lp_shelf
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="shelfName != null">shelf_name,</if>
+            <if test="shelfEncoding != null">shelf_encoding,</if>
+            <if test="remark != null">remark,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="shelfName != null">#{shelfName},</if>
+            <if test="shelfEncoding != null">#{shelfEncoding},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateShelf" parameterType="com.ruoyi.domain.Shelf">
+        update lp_shelf
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="shelfName != null">shelf_name = #{shelfName},</if>
+            <if test="shelfEncoding != null">shelf_encoding = #{shelfEncoding},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where shelf_id = #{shelfId}
+    </update>
+
+    <delete id="deleteShelfByShelfId" parameterType="Long">
+        delete from lp_shelf where shelf_id = #{shelfId}
+    </delete>
+
+    <delete id="deleteShelfByShelfIds" parameterType="String">
+        delete from lp_shelf where shelf_id in
+        <foreach item="shelfId" collection="array" open="(" separator="," close=")">
+            #{shelfId}
+        </foreach>
+    </delete>
+</mapper>

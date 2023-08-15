@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.mapper.LocationMapper">
+
+    <resultMap type="com.ruoyi.domain.Location" id="LocationResult">
+        <result property="locationId"    column="location_id"    />
+        <result property="locationName"    column="location_name"    />
+        <result property="locationEncoding"    column="location_encoding"    />
+        <result property="remark"    column="remark"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectLocationVo">
+        select location_id, location_name, location_encoding, remark, create_by, create_time, update_by, update_time from lp_location
+    </sql>
+
+    <select id="selectLocationList" parameterType="com.ruoyi.domain.Location" resultMap="LocationResult">
+        <include refid="selectLocationVo"/>
+        <where>
+            <if test="locationName != null  and locationName != ''"> and location_name like concat('%', #{locationName}, '%')</if>
+            <if test="locationEncoding != null  and locationEncoding != ''"> and location_encoding = #{locationEncoding}</if>
+        </where>
+    </select>
+
+    <select id="selectLocationByLocationId" parameterType="Long" resultMap="LocationResult">
+        <include refid="selectLocationVo"/>
+        where location_id = #{locationId}
+    </select>
+
+    <insert id="insertLocation" parameterType="com.ruoyi.domain.Location" useGeneratedKeys="true" keyProperty="locationId">
+        insert into lp_location
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="locationName != null">location_name,</if>
+            <if test="locationEncoding != null">location_encoding,</if>
+            <if test="remark != null">remark,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="locationName != null">#{locationName},</if>
+            <if test="locationEncoding != null">#{locationEncoding},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateLocation" parameterType="com.ruoyi.domain.Location">
+        update lp_location
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="locationName != null">location_name = #{locationName},</if>
+            <if test="locationEncoding != null">location_encoding = #{locationEncoding},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where location_id = #{locationId}
+    </update>
+
+    <delete id="deleteLocationByLocationId" parameterType="Long">
+        delete from lp_location where location_id = #{locationId}
+    </delete>
+
+    <delete id="deleteLocationByLocationIds" parameterType="String">
+        delete from lp_location where location_id in
+        <foreach item="locationId" collection="array" open="(" separator="," close=")">
+            #{locationId}
+        </foreach>
+    </delete>
+</mapper>

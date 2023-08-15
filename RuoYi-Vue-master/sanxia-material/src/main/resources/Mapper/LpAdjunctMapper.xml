@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.mapper.LpAdjunctMapper">
+
+    <resultMap type="com.ruoyi.domain.LpAdjunct" id="AdjunctResult">
+        <result property="adjunctId"    column="adjunct_id"    />
+        <result property="adjunctName"    column="adjunct_name"    />
+        <result property="description"    column="description"    />
+        <result property="modelType"    column="model_type"    />
+        <result property="supplierId"    column="supplier_id"    />
+        <result property="adjunctPrice"    column="adjunct_price"    />
+        <result property="equipmentId"    column="equipment_id"    />
+        <result property="classificationId"    column="classification_id"    />
+        <result property="adjunctStatus"    column="adjunct_status"    />
+        <result property="auditStatus"    column="audit_status"    />
+        <result property="auditOpinion"    column="audit_opinion"    />
+        <result property="auditTime"    column="audit_time"    />
+        <result property="auditPerson"    column="audit_person"    />
+        <result property="approverOpinion"    column="approver_opinion"    />
+        <result property="approverTime"    column="approver_time"    />
+        <result property="approverPerson"    column="approver_person"    />
+        <result property="sort"    column="sort"    />
+        <result property="remark"    column="remark"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+
+        <association property="equipment"  javaType="com.ruoyi.domain.LpEquipment" >
+            <result property="equipmentId" column="equipment_id" />
+            <result property="equipmentName" column="equipment_name" />
+        </association>
+
+        <association property="supplier"  javaType="com.ruoyi.domain.LpSupplier" >
+            <result property="supplierId" column="supplier_id" />
+            <result property="supplierName" column="supplier_name" />
+        </association>
+
+        <association property="classification"  javaType="com.ruoyi.domain.LpClassification" >
+            <result property="classificationId" column="classification_id" />
+            <result property="classificationName" column="classification_name" />
+        </association>
+    </resultMap>
+
+    <sql id="selectAdjunctVo">
+        select adjunct_id, adjunct_name, description, model_type, supplier_id, adjunct_price, equipment_id, classification_id, adjunct_status, audit_status, audit_opinion, audit_time, audit_person, approver_opinion, approver_time, approver_person, sort, remark, create_by, create_time, update_by, update_time from lp_adjunct
+    </sql>
+
+    <sql id="selectAdjunctVos">
+        select t1.adjunct_id, t1.adjunct_name, t1.description, t1.model_type, t1.supplier_id, t1.adjunct_price, t1.equipment_id, t1.classification_id, t1.adjunct_status, t1.audit_status, t1.audit_opinion,
+               t1.audit_time, t1.audit_person, t1.approver_opinion, t1.approver_time, t1.approver_person, t1.sort, t1.remark, t1.create_by, t1.create_time, t1.update_by, t1.update_time,t2.equipment_id,
+               t2.equipment_name,t3.supplier_id,t3.supplier_name,t4.classification_id,t4.classification_name
+        from lp_adjunct t1
+                 left join lp_equipment t2 on t1.equipment_id = t2.equipment_id
+                 left join lp_supplier t3 on t1.supplier_id = t3.supplier_id
+                 left join lp_classification t4 on t1.classification_id = t4.classification_id
+
+    </sql>
+
+    <select id="selectAdjunctList" parameterType="com.ruoyi.domain.LpAdjunct" resultMap="AdjunctResult">
+        <include refid="selectAdjunctVos"/>
+        <where>
+            <if test="adjunctName != null  and adjunctName != ''"> and t1.adjunct_name like concat('%', #{adjunctName}, '%')</if>
+            <if test="description != null  and description != ''"> and t1.description = #{description}</if>
+            <if test="modelType != null  and modelType != ''"> and t1.model_type = #{modelType}</if>
+            <if test="supplierId != null "> and t1.supplier_id = #{supplierId}</if>
+            <if test="adjunctPrice != null "> and t1.adjunct_price = #{adjunctPrice}</if>
+            <if test="equipmentId != null "> and t1.equipment_id = #{equipmentId}</if>
+            <if test="classificationId != null "> and t1.classification_id = #{classificationId}</if>
+            <if test="adjunctStatus != null "> and t1.adjunct_status = #{adjunctStatus}</if>
+            <if test="auditStatus != null "> and t1.audit_status = #{auditStatus}</if>
+            <if test="auditOpinion != null  and auditOpinion != ''"> and t1.audit_opinion = #{auditOpinion}</if>
+            <if test="auditTime != null "> and t1.audit_time = #{auditTime}</if>
+            <if test="auditPerson != null  and auditPerson != ''"> and t1.audit_person = #{auditPerson}</if>
+            <if test="approverOpinion != null  and approverOpinion != ''"> and t1.approver_opinion = #{approverOpinion}</if>
+            <if test="approverTime != null "> and t1.approver_time = #{approverTime}</if>
+            <if test="approverPerson != null  and approverPerson != ''"> and t1.approver_person = #{approverPerson}</if>
+            <if test="sort != null "> and t1.sort = #{sort}</if>
+        </where>
+    </select>
+
+    <select id="selectAdjunctByAdjunctId" parameterType="Integer" resultMap="AdjunctResult">
+        <include refid="selectAdjunctVo"/>
+        where adjunct_id = #{adjunctId}
+    </select>
+
+    <insert id="insertAdjunct" parameterType="com.ruoyi.domain.LpAdjunct" useGeneratedKeys="true" keyProperty="adjunctId">
+        insert into lp_adjunct
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="adjunctName != null">adjunct_name,</if>
+            <if test="description != null">description,</if>
+            <if test="modelType != null">model_type,</if>
+            <if test="supplierId != null">supplier_id,</if>
+            <if test="adjunctPrice != null">adjunct_price,</if>
+            <if test="equipmentId != null">equipment_id,</if>
+            <if test="classificationId != null">classification_id,</if>
+            <if test="adjunctStatus != null">adjunct_status,</if>
+            <if test="auditStatus != null">audit_status,</if>
+            <if test="auditOpinion != null">audit_opinion,</if>
+            <if test="auditTime != null">audit_time,</if>
+            <if test="auditPerson != null">audit_person,</if>
+            <if test="approverOpinion != null">approver_opinion,</if>
+            <if test="approverTime != null">approver_time,</if>
+            <if test="approverPerson != null">approver_person,</if>
+            <if test="sort != null">sort,</if>
+            <if test="remark != null">remark,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="adjunctName != null">#{adjunctName},</if>
+            <if test="description != null">#{description},</if>
+            <if test="modelType != null">#{modelType},</if>
+            <if test="supplierId != null">#{supplierId},</if>
+            <if test="adjunctPrice != null">#{adjunctPrice},</if>
+            <if test="equipmentId != null">#{equipmentId},</if>
+            <if test="classificationId != null">#{classificationId},</if>
+            <if test="adjunctStatus != null">#{adjunctStatus},</if>
+            <if test="auditStatus != null">#{auditStatus},</if>
+            <if test="auditOpinion != null">#{auditOpinion},</if>
+            <if test="auditTime != null">#{auditTime},</if>
+            <if test="auditPerson != null">#{auditPerson},</if>
+            <if test="approverOpinion != null">#{approverOpinion},</if>
+            <if test="approverTime != null">#{approverTime},</if>
+            <if test="approverPerson != null">#{approverPerson},</if>
+            <if test="sort != null">#{sort},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+        </trim>
+    </insert>
+
+    <update id="updateAdjunct" parameterType="com.ruoyi.domain.LpAdjunct">
+        update lp_adjunct
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="adjunctName != null">adjunct_name = #{adjunctName},</if>
+            <if test="description != null">description = #{description},</if>
+            <if test="modelType != null">model_type = #{modelType},</if>
+            <if test="supplierId != null">supplier_id = #{supplierId},</if>
+            <if test="adjunctPrice != null">adjunct_price = #{adjunctPrice},</if>
+            <if test="equipmentId != null">equipment_id = #{equipmentId},</if>
+            <if test="classificationId != null">classification_id = #{classificationId},</if>
+            <if test="adjunctStatus != null">adjunct_status = #{adjunctStatus},</if>
+            <if test="auditStatus != null">audit_status = #{auditStatus},</if>
+            <if test="auditOpinion != null">audit_opinion = #{auditOpinion},</if>
+            <if test="auditTime != null">audit_time = #{auditTime},</if>
+            <if test="auditPerson != null">audit_person = #{auditPerson},</if>
+            <if test="approverOpinion != null">approver_opinion = #{approverOpinion},</if>
+            <if test="approverTime != null">approver_time = #{approverTime},</if>
+            <if test="approverPerson != null">approver_person = #{approverPerson},</if>
+            <if test="sort != null">sort = #{sort},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where adjunct_id = #{adjunctId}
+    </update>
+
+    <delete id="deleteAdjunctByAdjunctId" parameterType="Integer">
+        delete from lp_adjunct where adjunct_id = #{adjunctId}
+    </delete>
+
+    <delete id="deleteAdjunctByAdjunctIds" parameterType="String">
+        delete from lp_adjunct where adjunct_id in
+        <foreach item="adjunctId" collection="array" open="(" separator="," close=")">
+            #{adjunctId}
+        </foreach>
+    </delete>
+</mapper>
